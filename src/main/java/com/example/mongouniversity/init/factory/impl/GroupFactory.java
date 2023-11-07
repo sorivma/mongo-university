@@ -6,6 +6,7 @@ import com.example.mongouniversity.model.Group;
 import com.example.mongouniversity.model.Student;
 import com.example.mongouniversity.service.FacultyService;
 import com.github.javafaker.Faker;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -44,12 +45,12 @@ public class GroupFactory implements EntityFactory<Group> {
                 .collect(Collectors.toList());
     }
 
-    private String facultyId() {
+    private ObjectId facultyId() {
         if (faculties == null) {
             this.faculties = facultyService.getAllFaculties();
         }
 
-        return faculties.get((int) (Math.random() * faculties.size())).getId();
+        return faculties.get((int) (Math.random() * faculties.size())).getObjectId();
     }
 
 

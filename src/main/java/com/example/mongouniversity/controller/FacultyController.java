@@ -3,6 +3,7 @@ package com.example.mongouniversity.controller;
 import com.example.mongouniversity.model.Faculty;
 import com.example.mongouniversity.service.FacultyService;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class FacultyController {
 
     @GetMapping("/{id}")
     Faculty getById(@PathVariable String id) {
-        return facultyService.getFaculty(id);
+        return facultyService.getFaculty(new ObjectId(id));
     }
 
     @GetMapping
@@ -38,6 +39,6 @@ public class FacultyController {
 
     @DeleteMapping("/delete/{id}")
     void deleteById(@PathVariable String id) {
-        facultyService.deleteFaculty(id);
+        facultyService.deleteFaculty(new ObjectId(id));
     }
 }

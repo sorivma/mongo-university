@@ -2,8 +2,11 @@ package com.example.mongouniversity.service.impl;
 
 import com.example.mongouniversity.exception.ClientErrorException;
 import com.example.mongouniversity.model.Faculty;
+import com.example.mongouniversity.model.Group;
 import com.example.mongouniversity.repo.FacultyRepository;
+import com.example.mongouniversity.repo.GroupRepository;
 import com.example.mongouniversity.service.FacultyService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,10 +17,15 @@ import java.util.List;
 @Service
 public class FacultyServiceImpl implements FacultyService {
     private FacultyRepository facultyRepository;
-
+    private GroupRepository groupRepository;
     @Autowired
     public void setFacultyRepository(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
+    }
+
+    @Autowired
+    public void setGroupRepository(GroupRepository groupRepository) {
+        this.groupRepository = groupRepository;
     }
 
     @Override
@@ -26,7 +34,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty getFaculty(String id) {
+    public Faculty getFaculty(ObjectId id) {
         return facultyRepository.findById(id).orElseThrow(
                 ()->new ClientErrorException
                         .NotFoundException("Faculty with given id: [%s] not found", id)
@@ -34,13 +42,21 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public void deleteFaculty(String id) {
-        facultyRepository.deleteAll();
+    public void deleteFaculty(ObjectId id) {
+
+        facultyRepository.deleteById(id);
+
+        List<Group> groups = groupRepository.findByFacultyId(id);
+        groups.forEach(group -> {
+            System.out.println(group);
+            groupRepository.deleteById(group.getObjectId());
+        });
     }
 
     @Override
     public void deleteAllFaculties() {
         facultyRepository.deleteAll();
+        groupRepository.deleteAll();
     }
 
     @Override

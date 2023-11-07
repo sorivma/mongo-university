@@ -5,6 +5,7 @@ import com.example.mongouniversity.model.Group;
 import com.example.mongouniversity.model.GroupSummary;
 import com.example.mongouniversity.repo.GroupRepository;
 import com.example.mongouniversity.service.GroupService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,17 +33,23 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group createGroup(Group group) {
+        group.getStudents().forEach(student -> {
+            if (student.getObjectId() == null) {
+                ObjectId id = ObjectId.get();
+                student.setObjectId(id);
+            }
+        });
         return groupRepository.save(group);
     }
 
     @Override
-    public Group getGroup(String id) {
+    public Group getGroup(ObjectId id) {
         return groupRepository.findById(id).orElseThrow(
                 () -> new ClientErrorException.NotFoundException("Faculty with given id: [%s] not found", id));
     }
 
     @Override
-    public void deleteGroup(String id) {
+    public void deleteGroup(ObjectId id) {
         groupRepository.deleteById(id);
     }
 
@@ -53,7 +60,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void saveAllGroups(List<Group> groups) {
-        groupRepository.saveAll(groups);
+        groups.forEach(this::createGroup);
     }
 
     @Override
@@ -77,6 +84,8 @@ public class GroupServiceImpl implements GroupService {
         AggregationResults<GroupSummary> results = mongoTemplate.aggregate(
                 aggregation, "group", GroupSummary.class
         );
+
+        System.out.println(results.getRawResults());
 
         return results.getMappedResults();
     }

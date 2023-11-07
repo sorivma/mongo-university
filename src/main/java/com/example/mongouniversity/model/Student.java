@@ -8,9 +8,18 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
-public class Student {
+public class Student extends BaseEntity {
     private String name;
     private String patron;
     private String surname;
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + getObjectId() +
+                "name='" + name + '\'' +
+                ", patron='" + patron + '\'' +
+                ", surname='" + surname + '\'' +
+                '}';
+    }
 }

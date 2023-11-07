@@ -12,9 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @NoArgsConstructor
 @ToString
 @Builder
-public class Faculty {
-    @Id
-    private String id;
+public class Faculty extends BaseEntity{
     private String code;
     private String name;
     @Field(name = "contact_phone")

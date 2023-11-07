@@ -15,5 +15,6 @@ public class ControllerAdvice {
         return new ResponseEntity<>(new Response(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    private record Response(String message){}
+    private record Response(String message) {
+    }
 }

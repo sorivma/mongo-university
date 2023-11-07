@@ -47,6 +47,7 @@ public class DataInitializer implements CommandLineRunner {
         facultyService.saveAllFaculties(faculties);
 
         List<Group> groups = groupFactory.createEntities(10_000);
+        System.out.println(groups.get(0));
         groupService.saveAllGroups(groups);
     }
 }
