@@ -34,19 +34,20 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty getFaculty(ObjectId id) {
-        return facultyRepository.findById(id).orElseThrow(
+    public Faculty getFaculty(String id) {
+        return facultyRepository.findById(new ObjectId(id)).orElseThrow(
                 ()->new ClientErrorException
                         .NotFoundException("Faculty with given id: [%s] not found", id)
         );
     }
 
     @Override
-    public void deleteFaculty(ObjectId id) {
+    public void deleteFaculty(String id) {
+        ObjectId objectId = new ObjectId(id);
 
-        facultyRepository.deleteById(id);
+        facultyRepository.deleteById(objectId);
 
-        List<Group> groups = groupRepository.findByFacultyId(id);
+        List<Group> groups = groupRepository.findByFacultyId(objectId);
         groups.forEach(group -> {
             System.out.println(group);
             groupRepository.deleteById(group.getObjectId());

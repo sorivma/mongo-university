@@ -3,7 +3,6 @@ package com.example.mongouniversity.controller;
 import com.example.mongouniversity.model.Group;
 import com.example.mongouniversity.model.GroupSummary;
 import com.example.mongouniversity.service.GroupService;
-import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,7 @@ public class GroupController {
 
     @GetMapping("/{id}")
     Group getById(@PathVariable String id) {
-        return groupService.getGroup(new ObjectId(id));
+        return groupService.getGroup(id);
     }
 
     @PostMapping
@@ -45,6 +44,6 @@ public class GroupController {
 
     @DeleteMapping("/delete/{id}")
     void deleteById(@PathVariable String id) {
-        groupService.deleteGroup(new ObjectId(id));
+        groupService.deleteGroup(id);
     }
 }

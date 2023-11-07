@@ -43,14 +43,15 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Group getGroup(ObjectId id) {
-        return groupRepository.findById(id).orElseThrow(
+    public Group getGroup(String id) {
+        ObjectId objectId = new ObjectId(id);
+        return groupRepository.findById(objectId).orElseThrow(
                 () -> new ClientErrorException.NotFoundException("Faculty with given id: [%s] not found", id));
     }
 
     @Override
-    public void deleteGroup(ObjectId id) {
-        groupRepository.deleteById(id);
+    public void deleteGroup(String id) {
+        groupRepository.deleteById(new ObjectId(id));
     }
 
     @Override
