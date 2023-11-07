@@ -5,10 +5,7 @@ import com.example.mongouniversity.model.GroupSummary;
 import com.example.mongouniversity.service.GroupService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/groups")
@@ -30,6 +27,11 @@ public class GroupController {
         return groupService.getGroups(pageable);
     }
 
+    @GetMapping("/{id}")
+    Group getById(@PathVariable String id) {
+        return groupService.getGroup(id);
+    }
+
     @PostMapping
     Group save(Group group) {
         return groupService.createGroup(group);
@@ -38,5 +40,10 @@ public class GroupController {
     @GetMapping("/summary")
     Iterable<GroupSummary> getSummary() {
         return groupService.getSummary();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    void deleteById(@PathVariable String id) {
+        groupService.deleteGroup(id);
     }
 }

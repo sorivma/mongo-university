@@ -5,10 +5,7 @@ import com.example.mongouniversity.service.FacultyService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/faculties")
@@ -24,6 +21,11 @@ public class FacultyController {
         return facultyService.getAllFaculties();
     }
 
+    @GetMapping("/{id}")
+    Faculty getById(@PathVariable String id) {
+        return facultyService.getFaculty(id);
+    }
+
     @GetMapping
     Page<Faculty> getAllPageable(Pageable pageable) {
         return facultyService.getFaculties(pageable);
@@ -32,5 +34,10 @@ public class FacultyController {
     @PostMapping
     Faculty save(Faculty faculty) {
         return facultyService.createFaculty(faculty);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    void deleteById(@PathVariable String id) {
+        facultyService.deleteFaculty(id);
     }
 }
